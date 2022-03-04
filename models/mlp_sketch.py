@@ -19,12 +19,12 @@ class SketchMLP(tf.keras.Model):
         self.classifier = tf.keras.layers.Dense(number_of_classes, kernel_initializer='he_normal')
     
     
-    def call(self, inputs):        
+    def call(self, inputs):   
         x = self.fc1(inputs)
         x = self.relu(self.bn_1(x))
         x = self.fc2(x)
-        self.relu(self.bn_2(x))
-        logits = self.fc2(x)
+        x = self.relu(self.bn_2(x))
+        logits = tf.keras.activations.softmax(self.classifier(x))        
         return logits
         
         
