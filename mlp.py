@@ -26,6 +26,7 @@ if __name__ == '__main__' :
     parser.add_argument("-dir", type=str,  help=" It's the folder where the data is located", required = True)
     pargs = parser.parse_args()            
     #------- load data
+    n_classes = 12
     if pargs.mode == 'train' :
         x_train_file = os.path.join(pargs.dir, 'train_x.npy')
         lbl_train_file = os.path.join(pargs.dir, 'train_lbl.npy')        
@@ -35,7 +36,7 @@ if __name__ == '__main__' :
         print('x_train: {}'.format(x_train.shape))
         print('lbl_train: {}'.format(lbl_train.shape))
         tr_dataset = tf.data.Dataset.from_tensor_slices((x_train, lbl_train))
-        tr_dataset = tr_dataset.map(lambda x,lbl : process_input(x,lbl, 10, _mean));    
+        tr_dataset = tr_dataset.map(lambda x,lbl : process_input(x,lbl, n_classes, _mean));    
         tr_dataset = tr_dataset.shuffle(10000)        
         tr_dataset = tr_dataset.batch(batch_size = 64)
             
@@ -48,12 +49,12 @@ if __name__ == '__main__' :
         print('x_val: {}'.format(x_val.shape))
         print('lbl_val: {}'.format(lbl_val.shape))
         val_dataset = tf.data.Dataset.from_tensor_slices((x_val, lbl_val))        
-        val_dataset = val_dataset.map(lambda x,lbl : process_input(x,lbl, 10, _mean));
+        val_dataset = val_dataset.map(lambda x,lbl : process_input(x,lbl, n_classes, _mean));
         val_dataset = val_dataset.batch(batch_size = 64)
       
     #Creating the model
-    n_classes = 10
-    model = mlp_model.SketchMLP(10)
+    
+    model = mlp_model.SketchMLP(n_classes)
     input_shape = (32,)
     _input = tf.keras.Input(input_shape, name = 'input')     
     model(_input)
