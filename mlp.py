@@ -12,8 +12,8 @@ import os
 import numpy as np
 
 def process_input(fv, lbl, n_classes, _mean):
-    #fv = fv - _mean
-    lbl = tf.cast(tf.one_hot(tf.cast(lbl, tf.int32), n_classes), dtype = tf.int32)
+    fv = fv - _mean
+    lbl = tf.one_hot(tf.cast(lbl, tf.int32), n_classes)
     return fv, lbl
     
 if __name__ == '__main__' :
@@ -24,38 +24,43 @@ if __name__ == '__main__' :
     parser = argparse.ArgumentParser(description = "Train a simple mlp model")        
     parser.add_argument("-mode", type=str, choices=['train', 'val'],  help=" train or val", required = False, default = 'train')    
     parser.add_argument("-dir", type=str,  help=" It's the folder where the data is located", required = True)
-    pargs = parser.parse_args()            
-    #------- load data
-    n_classes = 12
+    pargs = parser.parse_args()
+    # defining some required parameters. In the future, we will use a configuration file
+    n_classes = 10
+    batch_size = 64 
+    fv_size = 64
+    n_epochs = 50    
+    #------- load data    
     if pargs.mode == 'train' :
         x_train_file = os.path.join(pargs.dir, 'train_x.npy')
         lbl_train_file = os.path.join(pargs.dir, 'train_lbl.npy')        
         x_train = np.load(x_train_file)
         _mean = tf.reduce_mean(x_train, axis = 0)
         lbl_train = np.load(lbl_train_file)
-        print('x_train: {}'.format(x_train.shape))
-        print('lbl_train: {}'.format(lbl_train.shape))
+        print('train_x: {}'.format(x_train.shape))
+        print('train_lbl: {}'.format(lbl_train.shape))
         tr_dataset = tf.data.Dataset.from_tensor_slices((x_train, lbl_train))
         tr_dataset = tr_dataset.map(lambda x,lbl : process_input(x,lbl, n_classes, _mean));    
         tr_dataset = tr_dataset.shuffle(10000)        
-        tr_dataset = tr_dataset.batch(batch_size = 64)
+        tr_dataset = tr_dataset.batch(batch_size = batch_size)
             
             
     if pargs.mode == 'val' or  pargs.mode == 'train':
-        x_val_file = os.path.join(pargs.dir, 'test_x.npy')
-        lbl_val_file = os.path.join(pargs.dir, 'test_lbl.npy')        
+        x_val_file = os.path.join(pargs.dir, 'val_x.npy')
+        lbl_val_file = os.path.join(pargs.dir, 'val_lbl.npy')        
         x_val = np.load(x_val_file)
         lbl_val = np.load(lbl_val_file)
-        print('x_val: {}'.format(x_val.shape))
-        print('lbl_val: {}'.format(lbl_val.shape))
+        print('val_x: {}'.format(x_val.shape))
+        print('val_lbl: {}'.format(lbl_val.shape))
+        validation_steps = len(lbl_val) / batch_size
         val_dataset = tf.data.Dataset.from_tensor_slices((x_val, lbl_val))        
         val_dataset = val_dataset.map(lambda x,lbl : process_input(x,lbl, n_classes, _mean));
-        val_dataset = val_dataset.batch(batch_size = 64)
+        val_dataset = val_dataset.batch(batch_size = batch_size)
       
     #Creating the model
     
     model = mlp_model.SketchMLP(n_classes)
-    input_shape = (32,)
+    input_shape = (fv_size,)
     _input = tf.keras.Input(input_shape, name = 'input')     
     model(_input)
     model.summary() 
@@ -76,6 +81,6 @@ if __name__ == '__main__' :
         history = model.fit(tr_dataset, 
                             epochs = 100,
                             validation_data=val_dataset,
-                            validation_steps = 37,
+                            validation_steps = validation_steps,
                             callbacks=[model_checkpoint_callback])
     #test

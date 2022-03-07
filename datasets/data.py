@@ -8,7 +8,6 @@ import imgproc.pai_io as pai_io
 import numpy as np
 import imgproc.orientation_histograms as oh
 import random
-import sys
 import matplotlib.pyplot as plt
 
 
@@ -34,8 +33,7 @@ def read_image(filename, number_of_channels):
     return image
 
 def read_data_from_file(datafile, shuf = True):    
-    """read data from text files
-    and apply shuffle by default 
+    """This reads data from text files. This process shufles the data by default.  
     """                
     assert os.path.exists(datafile), "{} doesn't exist".format(datafile)        
     # reading data from files, line by line
@@ -48,29 +46,32 @@ def read_data_from_file(datafile, shuf = True):
     return filenames, labels
 
 def extract_features(data_dir, file_type, vector_size):
+    """
+    This computes an histogram of orientations from each image, and saves the produced data in two files:
+      *x.npy: feature vector
+      *lbl.npy: the corresponding label
+ 
+    """
     file = os.path.join(data_dir, file_type) + '.txt'
     print(file)    
     x_file = os.path.join(data_dir, file_type) + '_x.npy'
     lbl_file = os.path.join(data_dir, file_type) + '_lbl.npy'    
-    
-    #first let's go with training data
+        
     filenames, lbl = read_data_from_file(file)
     fvs = np.zeros((len(filenames), vector_size))
-    K = 16
+    #K = 16
     for i, filename in enumerate(filenames) :
         if (i % 100 == 0) :
             print('{} / {}'.format(i, len(filenames)))
-        image = read_image(filename, 1)
-        plt.imshow(image, cmap='gray')
-        plt.pause(1)
+        image = read_image(filename, 1)       
         #A, R = oh.compute_local_orientations(image, K)
         #fvs[i] = oh.compute_histogram(A, R, vector_size)
         fvs[i] = oh.compute_orientation_histogram(image, vector_size)
             
     x = fvs.astype(np.float32)
-    y = np.array(lbl, dtype = np.float32)
+    y = np.array(lbl, dtype = np.uint32)
     np.save(x_file, x)
-    print('data saved at {}'.format(x_file))
+    print('feature vectors saved at {}'.format(x_file))
     np.save(lbl_file, y)
     print('labels saved at {}'.format(lbl_file))
     
@@ -84,4 +85,4 @@ if __name__ == '__main__' :
     #print(a.shape)    
     #print(np.linalg.norm(a, ord=2, axis = 1).shape)
     extract_features(data_dir, file_type = 'train', vector_size = 32)
-    extract_features(data_dir, file_type = 'test', vector_size = 32)
+    extract_features(data_dir, file_type = 'val', vector_size = 32)
