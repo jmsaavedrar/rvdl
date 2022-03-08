@@ -18,6 +18,7 @@ def compute_orientation_histogram_basic(image, K):
 
 
 def compute_orientation_histogram(image, K):
+    eps = 1e-10
     h = np.zeros(K, np.float32)
     gx_mask = np.array([[-1, 0, 1], [-2, 0, 2], [-1, 0, 1]], np.float32)
     gy_mask = np.transpose(gx_mask)
@@ -31,7 +32,7 @@ def compute_orientation_histogram(image, K):
     for i in range(K):
         rows, cols = np.where(indx  == i)        
         h[i] = np.sum(mag[rows, cols])
-    h =  h / np.linalg.norm(h,2)  #unit vector    
+    h =  h / (np.linalg.norm(h,2) + eps)  #unit vector    
     return h
 
 
@@ -62,11 +63,12 @@ def compute_local_orientations(image, cell_size):
     return local_ang,  r_local
 
 def compute_histogram(A, R, K):
+    eps = 1e-10
     h = np.zeros(K, np.float32)       
     indx = np.round(K * A / np.pi) 
     indx[indx ==  K] = 0
     for i in range(K):
         rows, cols = np.where(indx  == i)        
         h[i] = np.sum(R[rows, cols])
-    h =  h / np.linalg.norm(h,2)  #unit vector
+    h =  h / (np.linalg.norm(h,2) + eps)  #unit vector
     return h

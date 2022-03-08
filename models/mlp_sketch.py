@@ -24,7 +24,7 @@ class SketchMLP(tf.keras.Model):
         x = self.relu(self.bn_1(x))
         x = self.fc2(x)
         x = self.relu(self.bn_2(x))
-        logits = tf.keras.activations.softmax(self.classifier(x))        
-        return logits
+        probs = tf.keras.activations.softmax(self.classifier(x))        
+        return probs
         
         

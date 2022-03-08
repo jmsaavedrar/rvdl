@@ -9,7 +9,8 @@ import numpy as np
  
 if __name__ == '__main__' :
     #filename = '/home/jsaavedr/Research/git/courses/CC5508/images/gray/chair_gray.jpg'
-    filename = '/home/vision/smb-datasets/SBIR/QuickDraw-Animals/test_images/bear/023_00133562.jpg'    
+    #filename = '/home/vision/smb-datasets/SBIR/QuickDraw-Animals/test_images/bear/023_00133562.jpg'
+    filename = '/home/vision/smb-datasets/PrintedSymbols/images/2/image_1857_000.png'    
     imageA = pai_io.imread(filename, as_gray = True)
     K = 16
     A, R = oh.compute_local_orientations(imageA,K)

@@ -62,8 +62,10 @@ def extract_features(data_dir, file_type, vector_size):
     #K = 16
     for i, filename in enumerate(filenames) :
         if (i % 100 == 0) :
-            print('{} / {}'.format(i, len(filenames)))
-        image = read_image(filename, 1)       
+            print('{} / {}'.format(i, len(filenames)))            
+        image = read_image(filename, 1)
+        #plt.imshow(image)
+        #plt.pause(1)       
         #A, R = oh.compute_local_orientations(image, K)
         #fvs[i] = oh.compute_histogram(A, R, vector_size)
         fvs[i] = oh.compute_orientation_histogram(image, vector_size)
