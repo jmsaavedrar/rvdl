@@ -20,11 +20,11 @@ You can run the same program for the validation dataset just changing the mode t
 
 It is important to note that after running the line above, two new files will be created and saved in the [DAT_DIR]. The first is the feature vector file which is named with the suffix *x.pny* and the label file named with the suffix *lbl.npy*.
 
-## 3.Defining an architecture
+## 3.Defining the MLP architecture
 Our architecture is an MLP consisting of two hidden layers with 128 and 64 neurons, respectively. The second layer is connected to the classification layer (with 12 neurons), whose outputs are then normalized by a softmax function. This architecture is implemented in the file [simple_mlp.py](??).
 ## Training
-> $ python mlp.py -dir /home/vision/smb-datasets/OCR/ -mode train -n_classes 12
+> $ python mlp.py -dir [DAT_DIR] -mode train -n_classes 12
 ## Testing
-> python mlp.py -dir /home/vision/smb-datasets/OCR/ -mode val -n_classes 12 -ckp [DATA_DIR]/models/050.h5 
+> python mlp.py -dir [DATA_DIR] -mode val -n_classes 12 -ckp [DATA_DIR]/models/050.h5 
 
 
