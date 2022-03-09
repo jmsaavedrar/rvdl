@@ -1,5 +1,5 @@
 # Installing Tensorflow
-I recommend installing Python and tensorflow using [Anaconda](https://docs.anaconda.com/anaconda/user-guide/tasks/tensorflow/)
+I recommend installing Python and Tensorflow using [Anaconda](https://docs.anaconda.com/anaconda/user-guide/tasks/tensorflow/)
 # OCR with MLP 
 Let's start with an OCR example, where a MLP model is trained for classifying images like those appearing below:
 ![alt text](ocr.png)
