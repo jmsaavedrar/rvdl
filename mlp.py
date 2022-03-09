@@ -7,7 +7,7 @@ import sys
 sys.path.append(str(pathlib.Path().absolute()))
 import tensorflow as tf
 import argparse
-import models.mlp_sketch as mlp_model
+import models.simple_mlp as mlp_model
 import os
 import numpy as np
 
@@ -69,7 +69,7 @@ if __name__ == '__main__' :
     #if ckp is present, load the learned weights
     if pargs.ckp is not None :
         model.load_weights(pargs.ckp, by_name = True, skip_mismatch = True)        
-    #gradient descent based optimizer (Adam) 
+    #SGD-based optimizer (Adam) 
     opt = tf.optimizers.Adam()
     model.compile(optimizer = opt, 
                   loss = tf.keras.losses.categorical_crossentropy,
@@ -77,8 +77,7 @@ if __name__ == '__main__' :
              
     model_checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
                                   filepath=os.path.join(pargs.dir, 'models', '{epoch:03d}.h5'),
-                                  save_weights_only=True,
-                                  mode = 'max',
+                                  save_weights_only=True,                                  
                                   monitor='val_acc',
                                   save_freq = 'epoch')
     #train
