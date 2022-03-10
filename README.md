@@ -14,7 +14,7 @@ In addition, to make this explanation more straightforward, we will suppose that
 
 ## 2.Feature Extraction
 We will represent each image as a histogram of orientations, this will be the feature vector. To compute the feature vectors for the training dataset, you shoud run the following line:
-> $ python extract_features.py -dir /home/vision/smb-datasets/OCR -mode train
+> $ python extract_features.py -dir [DATA_DIR] -mode train
 
 You can run the same program for the validation dataset just changing the mode to *val* (-mode val). 
 
