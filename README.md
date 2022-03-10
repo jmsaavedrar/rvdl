@@ -4,7 +4,7 @@ I recommend installing Python and Tensorflow using [Anaconda](https://docs.anaco
 Let's start with an OCR example, where an MLP model is trained for classifying images like those appearing below:
 ![alt text](ocr.png)
 ## 1. Preparing the data
-First of all, we need to define the training and validation datasets. In our case, both datasets can be downloaded from [here](https://www.dropbox.com/s/9sz9gu14wektmqu/OCR-12.zip). It is possible that you need to change the prefix path appearing in the files, to point out to the correct folder.
+First of all, we need to define the training and validation datasets. In our case, both datasets can be downloaded from [here](https://www.dropbox.com/s/2vl2maadfrk2hqt/OCR-12.zip). It is possible that you need to change the prefix path appearing in the files, to point out to the correct folder.
 The datasets are defined through two files. The first, *train-txt*, lists all the images used for training. 
 The second, *val.txt*, lists the images used for validation (or testing). You will note in the files that each image is accompanied by its corresponding label.
 In this OCR example, the number of classes is 12. 
