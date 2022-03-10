@@ -61,7 +61,7 @@ if __name__ == '__main__' :
       
     #Creating the model
     
-    model = mlp_model.SketchMLP(n_classes)
+    model = mlp_model.SimpleMLP(n_classes)
     input_shape = (fv_size,)
     _input = tf.keras.Input(input_shape, name = 'input')
     model(_input)

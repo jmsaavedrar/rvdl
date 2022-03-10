@@ -5,9 +5,9 @@ This is a simple MLP for designed for sketch classification
 import tensorflow as tf
 
 
-class SketchMLP(tf.keras.Model):
+class SimpleMLP(tf.keras.Model):
     def __init__(self, number_of_classes):
-        super(SketchMLP, self).__init__()
+        super(SimpleMLP, self).__init__()
         #fc 1
         self.fc1 = tf.keras.layers.Dense(128, kernel_initializer='he_normal')
         self.relu = tf.keras.layers.ReLU();        
